@@ -1,15 +1,23 @@
-import { Link } from "react-router-dom";
 import Header from "../layout/Header";
+import List from "../layout/AdminList";
 
 function AdminPage () {
     const user = "Admin"
-    const to = "user"
+    const to = ""
     return (
         <>
-        <Header 
-            user={user}
-            to={to}
-        />
+        <div
+            style={{
+                backgroundColor: "#F5F5F5",
+                height: "100%"
+            }}
+        >
+            <Header 
+                user={user}
+                to={to}
+            />
+            <List />
+        </div>
         </>
     )
 } 
