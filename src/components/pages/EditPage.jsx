@@ -232,7 +232,7 @@ function EditPage() {
                             <input type="email" 
                                 placeholder="Enter Email"
                                 name="userEmail"
-                                value={updatedStock.userEmail || ''}
+                                value={updatedStock.userEmailnpm  || ''}
                                 onChange={handleInputChange}
                                 onFocus={(e) => e.target.style.outline = 'none'}
                                 style={{
