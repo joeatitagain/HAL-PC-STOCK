@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";   
 import { useNavigate } from "react-router-dom";
 import NoteBook from "../assets/NoteBook.png";
@@ -22,7 +22,7 @@ function List () {
         }));
     };
     
-    const {data: stock, isLoading} = useQuery({
+    const {data: stock, isLoading, refetch} = useQuery({
         queryFn:() => fetch(`${BASE_API}/api/pcstock`, {
             method: 'GET',
         }).then(res => res.json()), // Ensure you parse the JSON response
@@ -30,8 +30,8 @@ function List () {
     });
 
     const {mutate: removeUser} = useMutation({
-        mutationFn: (id) => {
-            return fetch(`${BASE_API}/api/addcoustodian/${id}/user`, {
+        mutationFn: async (id) => {
+            const reponse = await fetch(`${BASE_API}/api/addcoustodian/${id}/user`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,13 +42,14 @@ function List () {
                     userEmail: "",
                 }),
             });
+            return reponse.json()
         },
         onSuccess:(id)=>{
-            navigate('/admin')
-            QueryClient.invalidateQueries(['stocks']);
+            refetch();
+
             setDrawerOpen(prevState => ({
                 ...prevState,
-                [id]: prevState[id]
+                [id]: false
             }));
         },
     });

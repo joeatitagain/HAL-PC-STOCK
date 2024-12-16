@@ -2,7 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import NoteBook from "../assets/NoteBook.png";
 import WorkStation from "../assets/WorkStation.png";
-// import { useState } from "react";
+import { useState, useEffect } from "react";
+import Loading from "../layout/Loading";
 
 const BASE_API = " http://localhost:4000"
 
@@ -51,10 +52,24 @@ function EditPage() {
         queryKey: ['stock', id],
     });
 
-    
+    const [updatedStock, setUpdatedStock] = useState({});
+
+    useEffect(() => {
+        if (stock) {
+            setUpdatedStock(stock);
+        }
+    }, [stock]);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target; // Destructure name and value from the event target
+        setUpdatedStock((prevStock) => ({
+            ...prevStock, // Keep the existing state
+            [name]: value,
+        }));
+    };
 
     if (isLoading) {
-        return <p>Loading...</p>;
+        return (<Loading />);
     }
 
     
@@ -147,6 +162,8 @@ function EditPage() {
                             <input type="text" 
                                 placeholder="Enter Name"
                                 name="userName"
+                                value={updatedStock.userName || ''}
+                                onChange={handleInputChange}
                                 onFocus={(e) => e.target.style.outline = 'none'}
                                 style={{
                                     borderRadius:"5px",
@@ -180,6 +197,8 @@ function EditPage() {
                             <input type="text" 
                                 placeholder="Enter Username"
                                 name="username"
+                                value={updatedStock.username || ''}
+                                onChange={handleInputChange}
                                 onFocus={(e) => e.target.style.outline = 'none'}
                                 style={{
                                     borderRadius:"5px",
@@ -213,6 +232,8 @@ function EditPage() {
                             <input type="email" 
                                 placeholder="Enter Email"
                                 name="userEmail"
+                                value={updatedStock.userEmail || ''}
+                                onChange={handleInputChange}
                                 onFocus={(e) => e.target.style.outline = 'none'}
                                 style={{
                                     borderRadius:"5px",
